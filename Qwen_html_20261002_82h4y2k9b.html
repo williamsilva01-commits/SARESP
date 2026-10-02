@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Simulado RTI - Matemática 6º Ano | SARESP 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .tier-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tier-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .tier-1 { background: #4caf50; color: white; }
+        .tier-2 { background: #ff9800; color: white; }
+        .tier-3 { background: #f44336; color: white; }
+
+        .content {
+            padding: 30px;
+        }
+
+        .student-info {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .student-info input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        .question-card {
+            background: #fafafa;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            border-color: #1a73e8;
+            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.2);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .question-number {
+            background: #1a73e8;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .question-tier {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            color: white;
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .visual-aid {
+            background: white;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            background: white;
+            border: 2px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option:hover {
+            background: #e3f2fd;
+            border-color: #1a73e8;
+            transform: translateX(5px);
+        }
+
+        .option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 1em;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(26, 115, 232, 0.4);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            display: none;
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .result-tier {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 5px solid;
+        }
+
+        .result-tier-1 { border-color: #4caf50; }
+        .result-tier-2 { border-color: #ff9800; }
+        .result-tier-3 { border-color: #f44336; }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: width 0.5s ease;
+        }
+
+        .feedback {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            color: #2e7d32;
+        }
+
+        .feedback.incorrect {
+            background: #ffebee;
+            border: 2px solid #f44336;
+            color: #c62828;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .operation-hint {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.5em; }
+            .content { padding: 15px; }
+            .question-card { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Simulado RTI - Matemática 6º Ano</h1>
+            <p>Preparação SARESP 2026 | Resposta à Intervenção</p>
+            <div class="tier-indicator">
+                <span class="tier-badge tier-1">🟢 Tier 1: Básico</span>
+                <span class="tier-badge tier-2">🟡 Tier 2: Intermediário</span>
+                <span class="tier-badge tier-3">🔴 Tier 3: Avançado</span>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="student-info">
+                <label for="studentName"><strong>👤 Nome do Aluno:</strong></label>
+                <input type="text" id="studentName" placeholder="Digite seu nome completo">
+            </div>
+
+            <div id="quizContainer"></div>
+
+            <button class="btn" id="submitBtn" onclick="submitQuiz()">
+                ✅ Finalizar Simulado
+            </button>
+
+            <div class="results" id="results">
+                <h2>📊 Resultado da Avaliação RTI</h2>
+                <div id="resultsContent"></div>
+                <button class="btn" onclick="location.reload()">
+                    🔄 Novo Simulado
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // BANCO DE QUESTÕES - Baseado na Matriz SARESP 6º Ano
+        const questionBank = [
+            // TIER 1 - Nível Básico (Identificação e reconhecimento visual)
+            {
+                id: 1,
+                tier: 1,
+                ae: "AE1",
+                descriptor: "Compor e decompor números naturais",
+                question: "Observe o número abaixo:",
+                visual: " 3.456",
+                options: [
+                    "3 milhares, 4 centenas, 5 dezenas e 6 unidades",
+                    "3 centenas, 4 dezenas, 5 unidades e 6 décimos",
+                    "34 milhares e 56 unidades",
+                    "3 unidades, 4 dezenas, 5 centenas e 6 milhares"
+                ],
+                correct: 0,
+                hint: "💡 Dica: Cada algarismo tem um valor dependendo da sua posição!"
+            },
+            {
+                id: 2,
+                tier: 1,
+                ae: "AE2",
+                descriptor: "Comparar números naturais",
+                question: "Qual número é MAIOR?",
+                visual: " Compare: 2.345 ️ 2.435",
+                options: ["2.345", "2.435", "São iguais", "Não é possível saber"],
+                correct: 1,
+                hint: "💡 Dica: Compare da esquerda para a direita, algarismo por algarismo!"
+            },
+            {
+                id: 3,
+                tier: 1,
+                ae: "AE3",
+                descriptor: "Identificar operação - Adição",
+                question: "Maria tinha 15 figurinhas. Ganhou mais 8. Quantas figurinhas ela tem AGORA?",
+                visual: "🎴 15 + 8 = ?",
+                options: ["23 figurinhas", "7 figurinhas", "120 figurinhas", "2 figurinhas"],
+                correct: 0,
+                hint: "💡 Quando GANHA mais, usamos ADIÇÃO (+)!"
+            },
+            {
+                id: 4,
+                tier: 1,
+                ae: "AE3",
+                descriptor: "Identificar operação - Subtração",
+                question: "João tinha 20 reais. Gastou 7 reais. Quanto SOUBROU?",
+                visual: "💰 20 - 7 = ?",
+                options: ["27 reais", "13 reais", "140 reais", "3 reais"],
+                correct: 1,
+                hint: "💡 Quando GASTA ou TIRA, usamos SUBTRAÇÃO (-)!"
+            },
+            {
+                id: 5,
+                tier: 1,
+                ae: "AE4",
+                descriptor: "Múltiplos e divisores",
+                question: "Qual número é MÚLTIPLO de 5?",
+                visual: "5️⃣ × ? = ?",
+                options: ["12", "15", "17", "23"],
+                correct: 1,
+                hint: "💡 Múltiplos de 5 terminam em 0 ou 5!"
+            },
+            {
+                id: 6,
+                tier: 1,
+                ae: "AE5",
+                descriptor: "Fração como parte-todo",
+                question: "Uma pizza foi dividida em 4 partes iguais. João comeu 1 parte. Que fração ele comeu?",
+                visual: "🍕 [■][□][□][□]",
+                options: ["1/4", "1/2", "3/4", "4/1"],
+                correct: 0,
+                hint: "💡 Fração = parte que comeu / total de partes!"
+            },
+            {
+                id: 7,
+                tier: 1,
+                ae: "AE8",
+                descriptor: "Classificar polígonos",
+                question: "Quantos lados tem um triângulo?",
+                visual: "🔺",
+                options: ["2 lados", "3 lados", "4 lados", "5 lados"],
+                correct: 1,
+                hint: "💡 'Tri' significa três!"
+            },
+            {
+                id: 8,
+                tier: 1,
+                ae: "AE13",
+                descriptor: "Figuras espaciais",
+                question: "Qual figura espacial parece uma bola?",
+                visual: "⚽",
+                options: ["Cubo", "Esfera", "Cilindro", "Pirâmide"],
+                correct: 1,
+                hint: "💡 Pense em objetos redondos do dia a dia!"
+            },
+
+            // TIER 2 - Nível Intermediário (Aplicação e análise)
+            {
+                id: 9,
+                tier: 2,
+                ae: "AE3",
+                descriptor: "Resolver problemas com 4 operações",
+                question: "Uma caixa tem 12 lápis. Quantos lápis há em 5 caixas IGUAIS?",
+                visual: "✏️✏️️ × 5 caixas",
+                options: ["17 lápis", "60 lápis", "7 lápis", "125 lápis"],
+                correct: 1,
+                hint: "💡 Quando tem grupos IGUAIS, usamos MULTIPLICAÇÃO (×)!"
+            },
+            {
+                id: 10,
+                tier: 2,
+                ae: "AE3",
+                descriptor: "Divisão - repartir igualmente",
+                question: "24 balas devem ser divididas igualmente entre 6 crianças. Quantas balas cada uma recebe?",
+                visual: "🍬🍬 ÷ 6 crianças",
+                options: ["3 balas", "4 balas", "6 balas", "18 balas"],
+                correct: 1,
+                hint: " Quando REPARTE IGUAL, usamos DIVISÃO (÷)!"
+            },
+            {
+                id: 11,
+                tier: 2,
+                ae: "AE6",
+                descriptor: "Comparar frações",
+                question: "Qual fração é MAIOR?",
+                visual: "📊 1/2 ️ 1/4",
+                options: ["1/2", "1/4", "São iguais", "Não é possível comparar"],
+                correct: 0,
+                hint: "💡 Quanto MENOR o denominador, MAIOR a parte!"
+            },
+            {
+                id: 12,
+                tier: 2,
+                ae: "AE7",
+                descriptor: "Adição de frações",
+                question: "Ana comeu 1/4 de pizza e Pedro comeu 2/4. Juntos, quanto comeram?",
+                visual: "🍕 1/4 + 2/4 = ?",
+                options: ["3/8", "3/4", "2/4", "1/4"],
+                correct: 1,
+                hint: "💡 Com denominadores iguais, soma os numeradores!"
+            },
+            {
+                id: 13,
+                tier: 2,
+                ae: "AE11",
+                descriptor: "Operações com decimais",
+                question: "Um caderno custa R$ 4,50 e uma caneta custa R$ 2,30. Quanto custa os dois juntos?",
+                visual: "💰 R$ 4,50 + R$ 2,30",
+                options: ["R$ 6,80", "R$ 6,30", "R$ 7,00", "R$ 2,20"],
+                correct: 0,
+                hint: "💡 Alinhe a vírgula e some como números naturais!"
+            },
+            {
+                id: 14,
+                tier: 2,
+                ae: "AE12",
+                descriptor: "Porcentagem simples",
+                question: "Uma camiseta custa R$ 50,00. Tem 10% de desconto. Quanto é o desconto?",
+                visual: " R$ 50,00 - 10%",
+                options: ["R$ 5,00", "R$ 10,00", "R$ 45,00", "R$ 50,00"],
+                correct: 0,
+                hint: "💡 10% = 10 de cada 100. De 50, é a metade de 10!"
+            },
+            {
+                id: 15,
+                tier: 2,
+                ae: "AE14",
+                descriptor: "Unidades de medida",
+                question: "Quantos centímetros há em 2 metros?",
+                visual: "📏 2 m = ? cm",
+                options: ["20 cm", "200 cm", "2.000 cm", "0,2 cm"],
+                correct: 1,
+                hint: "💡 1 metro = 100 centímetros!"
+            },
+            {
+                id: 16,
+                tier: 2,
+                ae: "AE16",
+                descriptor: "Área de retângulo",
+                question: "Um retângulo tem 5 cm de comprimento e 3 cm de largura. Qual é a área?",
+                visual: "⬛ 5cm × 3cm",
+                options: ["8 cm²", "15 cm²", "16 cm²", "20 cm²"],
+                correct: 1,
+                hint: "💡 Área = comprimento × largura!"
+            },
+
+            // TIER 3 - Nível Avançado (Análise complexa e interpretação)
+            {
+                id: 17,
+                tier: 3,
+                ae: "AE1",
+                descriptor: "Sistema de numeração decimal complexo",
+                question: "Como escrevemos 'três inteiros e vinte e cinco centésimos' em números decimais?",
+                visual: "3 + 25/100 = ?",
+                options: ["3,25", "32,5", "0,325", "325"],
+                correct: 0,
+                hint: "💡 Centésimos = duas casas depois da vírgula!"
+            },
+            {
+                id: 18,
+                tier: 3,
+                ae: "AE3",
+                descriptor: "Problema multi-etapas",
+                question: "Uma fábrica produz 120 brinquedos por dia. Em 5 dias, quantos brinquedos foram produzidos? Se venderam 400, quantos sobraram?",
+                visual: "🏭 120/dia × 5 dias - 400 vendidos",
+                options: ["200 brinquedos", "600 brinquedos", "100 brinquedos", "800 brinquedos"],
+                correct: 0,
+                hint: "💡 Primeiro multiplique, depois subtraia!"
+            },
+            {
+                id: 19,
+                tier: 3,
+                ae: "AE7",
+                descriptor: "Operações com frações diferentes",
+                question: "Maria bebeu 1/2 de suco e João bebeu 1/3. Quanto beberam juntos?",
+                visual: "🥤 1/2 + 1/3 = ?",
+                options: ["2/5", "5/6", "1/5", "2/6"],
+                correct: 1,
+                hint: "💡 Encontre o denominador comum (6) antes de somar!"
+            },
+            {
+                id: 20,
+                tier: 3,
+                ae: "AE11",
+                descriptor: "Problema com decimais",
+                question: "Um tanque tem 1.250,5 litros de água. Retiraram 487,25 litros. Quanto sobrou?",
+                visual: " 1.250,5 - 487,25",
+                options: ["763,25 litros", "763,75 litros", "863,25 litros", "1.737,75 litros"],
+                correct: 0,
+                hint: "💡 Complete com zero: 1.250,50 - 487,25"
+            },
+            {
+                id: 21,
+                tier: 3,
+                ae: "AE12",
+                descriptor: "Porcentagem com acréscimo",
+                question: "Um produto custa R$ 80,00. O preço aumentou 25%. Qual o novo preço?",
+                visual: "📈 R$ 80,00 + 25%",
+                options: ["R$ 100,00", "R$ 105,00", "R$ 95,00", "R$ 82,50"],
+                correct: 0,
+                hint: "💡 25% de 80 = 20. Depois some: 80 + 20!"
+            },
+            {
+                id: 22,
+                tier: 3,
+                ae: "AE14",
+                descriptor: "Conversão de medidas",
+                question: "Uma corrida tem 2,5 km. Quantos metros o atleta correu?",
+                visual: "🏃 2,5 km = ? m",
+                options: ["25 m", "250 m", "2.500 m", "25.000 m"],
+                correct: 2,
+                hint: "💡 1 km = 1.000 m. Multiplique por 1.000!"
+            },
+            {
+                id: 23,
+                tier: 3,
+                ae: "AE16",
+                descriptor: "Área e perímetro",
+                question: "Um quadrado tem lado de 6 cm. Qual é o perímetro?",
+                visual: "⬜ lado = 6 cm",
+                options: ["12 cm", "24 cm", "36 cm", "18 cm"],
+                correct: 1,
+                hint: "💡 Perímetro = soma de todos os lados (4 lados iguais)!"
+            },
+            {
+                id: 24,
+                tier: 3,
+                ae: "AE17",
+                descriptor: "Volume de bloco retangular",
+                question: "Uma caixa tem 4 cm de comprimento, 3 cm de largura e 2 cm de altura. Qual o volume?",
+                visual: " 4 × 3 × 2",
+                options: ["9 cm³", "12 cm³", "24 cm³", "36 cm³"],
+                correct: 2,
+                hint: "💡 Volume = comprimento × largura × altura!"
+            }
+        ];
+
+        let selectedQuestions = [];
+        let studentAnswers = {};
+
+        // Função para embaralhar array (Fisher-Yates)
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Selecionar 10 questões aleatórias balanceadas por Tier
+        function selectRandomQuestions() {
+            const tier1Questions = questionBank.filter(q => q.tier === 1);
+            const tier2Questions = questionBank.filter(q => q.tier === 2);
+            const tier3Questions = questionBank.filter(q => q.tier === 3);
+
+            const selected = [
+                ...shuffleArray(tier1Questions).slice(0, 4),  // 4 questões Tier 1
+                ...shuffleArray(tier2Questions).slice(0, 4),  // 4 questões Tier 2
+                ...shuffleArray(tier3Questions).slice(0, 2)   // 2 questões Tier 3
+            ];
+
+            return shuffleArray(selected);
+        }
+
+        // Renderizar questões
+        function renderQuiz() {
+            selectedQuestions = selectRandomQuestions();
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = '';
+
+            selectedQuestions.forEach((question, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+                questionCard.innerHTML = `
+                    <div class="question-header">
+                        <span class="question-number">Questão ${index + 1}</span>
+                        <span class="question-tier tier-${question.tier}">
+                            ${question.tier === 1 ? '🟢 Tier 1' : question.tier === 2 ? '🟡 Tier 2' : '🔴 Tier 3'}
+                        </span>
+                    </div>
+                    <div class="question-text">${question.question}</div>
+                    <div class="visual-aid">${question.visual}</div>
+                    <div class="operation-hint">${question.hint}</div>
+                    <div class="options">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option">
+                                <input type="radio" 
+                                       id="q${question.id}_opt${optIndex}" 
+                                       name="question_${question.id}" 
+                                       value="${optIndex}"
+                                       onchange="saveAnswer(${question.id}, ${optIndex})">
+                                <label for="q${question.id}_opt${optIndex}">${option}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="feedback" id="feedback_${question.id}"></div>
+                `;
+                container.appendChild(questionCard);
+            });
+        }
+
+        // Salvar resposta
+        function saveAnswer(questionId, optionIndex) {
+            studentAnswers[questionId] = optionIndex;
+        }
+
+        // Submeter quiz
+        function submitQuiz() {
+            const studentName = document.getElementById('studentName').value.trim();
+            
+            if (!studentName) {
+                alert('⚠️ Por favor, digite o nome do aluno antes de finalizar!');
+                return;
+            }
+
+            if (Object.keys(studentAnswers).length < selectedQuestions.length) {
+                const unanswered = selectedQuestions.length - Object.keys(studentAnswers).length;
+                if (!confirm(`⚠️ Você ainda tem ${unanswered} questão(ões) sem resposta. Deseja finalizar mesmo assim?`)) {
+                    return;
+                }
+            }
+
+            // Calcular resultados por Tier
+            const tierResults = {
+                1: { correct: 0, total: 0 },
+                2: { correct: 0, total: 0 },
+                3: { correct: 0, total: 0 }
+            };
+
+            selectedQuestions.forEach(question => {
+                tierResults[question.tier].total++;
+                if (studentAnswers[question.id] === question.correct) {
+                    tierResults[question.tier].correct++;
+                }
+
+                // Mostrar feedback
+                const feedbackDiv = document.getElementById(`feedback_${question.id}`);
+                const isCorrect = studentAnswers[question.id] === question.correct;
+                feedbackDiv.className = `feedback show ${isCorrect ? 'correct' : 'incorrect'}`;
+                feedbackDiv.innerHTML = isCorrect 
+                    ? `✅ <strong>Correto!</strong> ${question.hint}`
+                    : `❌ <strong>Incorreto.</strong> A resposta certa é: <strong>${question.options[question.correct]}</strong><br>${question.hint}`;
+            });
+
+            // Exibir resultados
+            displayResults(studentName, tierResults);
+        }
+
+        // Exibir resultados
+        function displayResults(studentName, tierResults) {
+            const resultsDiv = document.getElementById('results');
+            const resultsContent = document.getElementById('resultsContent');
+            
+            const totalCorrect = tierResults[1].correct + tierResults[2].correct + tierResults[3].correct;
+            const totalQuestions = selectedQuestions.length;
+            const percentage = ((totalCorrect / totalQuestions) * 100).toFixed(1);
+
+            // Determinar nível de intervenção
+            let interventionLevel = '';
+            let interventionColor = '';
+            let interventionText = '';
+
+            if (tierResults[1].correct / tierResults[1].total < 0.5) {
+                interventionLevel = '🔴 Intervenção Intensiva (Tier 3)';
+                interventionColor = '#f44336';
+                interventionText = 'O aluno precisa de apoio individualizado focado nos conceitos básicos. Recomenda-se revisão dos fundamentos com material concreto e visual.';
+            } else if (tierResults[2].correct / tierResults[2].total < 0.6) {
+                interventionLevel = '🟡 Intervenção Moderada (Tier 2)';
+                interventionColor = '#ff9800';
+                interventionText = 'O aluno domina o básico mas precisa de reforço em grupos pequenos para consolidar habilidades intermediárias.';
+            } else if (tierResults[3].correct / tierResults[3].total < 0.7) {
+                interventionLevel = '🟢 Monitoramento (Tier 1)';
+                interventionColor = '#4caf50';
+                interventionText = 'O aluno está no caminho certo! Continue com o ensino regular e ofereça desafios adicionais.';
+            } else {
+                interventionLevel = '⭐ Excelente Desempenho';
+                interventionColor = '#2196f3';
+                interventionText = 'O aluno demonstra domínio sólido dos conteúdos. Considere atividades de aprofundamento.';
+            }
+
+            resultsContent.innerHTML = `
+                <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3>👤 Aluno: ${studentName}</h3>
+                    <p><strong>📅 Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
+                    <p><strong>📊 Pontuação Total:</strong> ${totalCorrect}/${totalQuestions} (${percentage}%)</p>
+                </div>
+
+                <div class="result-tier result-tier-1">
+                    <h4>🟢 Tier 1 - Nível Básico</h4>
+                    <p>${tierResults[1].correct}/${tierResults[1].total} questões corretas</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${(tierResults[1].correct/tierResults[1].total*100)}%">
+                            ${((tierResults[1].correct/tierResults[1].total)*100).toFixed(0)}%
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-tier result-tier-2">
+                    <h4>🟡 Tier 2 - Nível Intermediário</h4>
+                    <p>${tierResults[2].correct}/${tierResults[2].total} questões corretas</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${(tierResults[2].correct/tierResults[2].total*100)}%; background: linear-gradient(90deg, #ff9800, #ffc107);">
+                            ${((tierResults[2].correct/tierResults[2].total)*100).toFixed(0)}%
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-tier result-tier-3">
+                    <h4>🔴 Tier 3 - Nível Avançado</h4>
+                    <p>${tierResults[3].correct}/${tierResults[3].total} questões corretas</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${(tierResults[3].correct/tierResults[3].total*100)}%; background: linear-gradient(90deg, #f44336, #ff5722);">
+                            ${((tierResults[3].correct/tierResults[3].total)*100).toFixed(0)}%
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: ${interventionColor}20; border-left: 5px solid ${interventionColor}; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <h4 style="color: ${interventionColor}; margin-bottom: 10px;">${interventionLevel}</h4>
+                    <p>${interventionText}</p>
+                </div>
+
+                <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <h4>📋 Recomendações Pedagógicas:</h4>
+                    <ul style="margin-top: 10px; padding-left: 20px; line-height: 1.8;">
+                        <li><strong>Para alunos visuais:</strong> Use mais recursos gráficos, cores e representações concretas</li>
+                        <li><strong>Para dificuldade em operações:</strong> Trabalhe com palavras-chave (ganhar=+, gastar=-, grupos iguais=×, repartir=÷)</li>
+                        <li><strong>Para decimais e frações:</strong> Use material dourado, régua e representações pictóricas</li>
+                        <li><strong>Leitura e interpretação:</strong> Leia as questões em voz alta e peça para o aluno recontar com suas palavras</li>
+                    </ul>
+                </div>
+            `;
+
+            resultsDiv.classList.add('show');
+            document.getElementById('submitBtn').disabled = true;
+            
+            // Scroll para resultados
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Inicializar quiz ao carregar
+        window.onload = renderQuiz;
+    </script>
+</body>
+</html>
